@@ -6,10 +6,8 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_DB: pridiction
-      POSTGRES_PASSWORD: pridiction
-      POSTGRES_USER: pridiction
+    env_file:
+      - backend/.env
     volumes:
       - ./backend:/app/static
 
