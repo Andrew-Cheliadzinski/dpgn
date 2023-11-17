@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: pridiction
+      POSTGRES_PASSWORD: pridiction
+      POSTGRES_USER: pridiction
+    volumes:
+      - ./backend:/app/static
+
+  back:
+    build: 
+      context: backend/
+    env_file:
+      - backend/.env
+    volumes:
+      - static:/app/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+  
+  nginx:
+    build: 
+      context: nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - static:/app/static
+    depends_on:
+      - back
+
+volumes:
+  static:
